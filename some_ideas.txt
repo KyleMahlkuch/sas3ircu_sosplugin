@@ -122,9 +122,9 @@ class LSIAdapter(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
                                 "sas3ircu {} DELETEVOLUME {}".format(cont_num, volID),
 
                                 "sas3ircu {} HOTSPARE {}".format(cont_num, enc_bay),
-                                "sas3ircu {} STATUS".format(cont_num),
+                                        "sas3ircu {} STATUS".format(cont_num),
 
-                                "sas3ircu {} CONSTCHK {}".format(cont_num, volID),
+                                    ????"sas3ircu {} CONSTCHK {}".format(cont_num, volID),
                                 "sas3ircu {} ACTIVATE {}".format(cont_num, volID),
                                 "sas3ircu {} LOCATE {} {}".format(cont_num, enc_bay, action),
                                 "sas3ircu {} LOGIR {}".format(cont_num, action), 

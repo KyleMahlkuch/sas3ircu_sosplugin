@@ -13,14 +13,12 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-
 #This sosreport plugin is meant for sas3ircu adapters.
 #This plugin currently displays basic info about each adapter it finds.  
 
 
 from sos.plugins import Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin
 import os
-
 
 class LSIAdapter(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
 
@@ -39,6 +37,12 @@ class LSIAdapter(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
         for dev_info in dev_lst: #for each adapter get some basic info  
             dev_num = dev_info.split()[0]    
             self.add_cmd_output([
-                                "sh -c '~/sas3ircu {} DISPLAY'".format(dev_num)
+                                "sh -c '~/sas3ircu {} DISPLAY'".format(dev_num),
+                                "sh -c '~/sas3ircu {} STATUS'".format(dev_num)
+                                #"sh -c 'sas3ircu {} CONSTCHK {}'".format(dev_num, volID) #if volID exists. volID found in status.
                                 ])
+
+#Things to work on:
+#sas3ircu should be called from PATH not from a direct path. 
+#see if Volume ID exists on y0377ep1 to test constchk.
 
