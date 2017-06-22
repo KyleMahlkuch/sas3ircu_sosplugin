@@ -23,15 +23,19 @@ class LSIAdapter(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
 
     plugin_name = "lsiadapter"
 
+
     def setup(self):
 
         output = self.call_ext_prog("sh -c 'sas3ircu list'", timeout = 5) #get list of adapters
-        self.add_cmd_output("sh -c 'sas3ircu list'", suggest_filename="sas3ircu_list", timeout = 5)
 
-        dev_lst = output["output"].splitlines()[10:-1] #just want devices
+        if not (output["status"]): #status = 0 means no timeout
+            self.add_cmd_output("sh -c 'sas3ircu list'", suggest_filename="sas3ircu_list", timeout = 5)
 
-        for dev_info in dev_lst: #for each adapter get some basic info
-            dev_num = dev_info.split()[0]    
-            self.add_cmd_output("sh -c 'sas3ircu {} DISPLAY'".format(dev_num), suggest_filename="sas3ircu_display_{}".format(dev_num), timeout = 5)
-            self.add_cmd_output("sh -c 'sas3ircu {} STATUS'".format(dev_num), suggest_filename="sas3ircu_status_{}".format(dev_num), timeout = 5)
+            dev_lst = output["output"].splitlines()[10:-1] #just want devices
 
+            for dev_info in dev_lst: #for each adapter get some basic info
+                dev_num = dev_info.split()[0]    
+                self.add_cmd_output("sh -c 'sas3ircu {} DISPLAY'".format(dev_num), suggest_filename="sas3ircu_display_{}".format(dev_num), timeout = 5)
+                self.add_cmd_output("sh -c 'sas3ircu {} STATUS'".format(dev_num), suggest_filename="sas3ircu_status_{}".format(dev_num), timeout = 5)
+
+    
