@@ -14,8 +14,7 @@
 
 
 #This sosreport plugin is meant for sas3ircu adapters.
-#This plugin currently displays basic info about each adapter it finds.  
-
+#This plugin logs inforamtion on each adapter it finds. 
 
 from sos.plugins import Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin
 import os
@@ -23,26 +22,16 @@ import os
 class LSIAdapter(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
 
     plugin_name = "lsiadapter"
-    packages = ('scsi0',) #*** is this the correct package?
-
 
     def setup(self):
 
-        output = self.call_ext_prog("sh -c '~/sas3ircu list'") #get list of adapters
-        self.add_cmd_output(["sh -c '~/sas3ircu list'"])
+        output = self.call_ext_prog("sh -c 'sas3ircu list'") #get list of adapters
+        self.add_cmd_output(["sh -c 'sas3ircu list'"], suggest_filename="sas3ircu_list", timeout = 5)
 
         dev_lst = output["output"].splitlines()[10:-1] #just want devices
-        print(dev_lst)
 
-        for dev_info in dev_lst: #for each adapter get some basic info  
+        for dev_info in dev_lst: #for each adapter get some basic info: display and status
             dev_num = dev_info.split()[0]    
-            self.add_cmd_output([
-                                "sh -c '~/sas3ircu {} DISPLAY'".format(dev_num),
-                                "sh -c '~/sas3ircu {} STATUS'".format(dev_num)
-                                #"sh -c 'sas3ircu {} CONSTCHK {}'".format(dev_num, volID) #if volID exists. volID found in status.
-                                ])
-
-#Things to work on:
-#sas3ircu should be called from PATH not from a direct path. 
-#see if Volume ID exists on y0377ep1 to test constchk.
+            self.add_cmd_output(["sh -c 'sas3ircu {} DISPLAY'".format(dev_num)], suggest_filename="sas3ircu_display_{}".format(dev_num), timeout = 5)
+            self.add_cmd_output(["sh -c 'sas3ircu {} STATUS'".format(dev_num)], suggest_filename="sas3ircu_status_{}".format(dev_num), timeout = 5)
 
