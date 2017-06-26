@@ -19,9 +19,9 @@
 from sos.plugins import Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin
 import os
 
-class LSIAdapter(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
+class SAS3ircu(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
 
-    plugin_name = "lsiadapter"
+    plugin_name = "sas3ircu"
 
 
     def setup(self):
