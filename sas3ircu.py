@@ -45,4 +45,3 @@ class SAS3ircu(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
                     "sh -c 'sas3ircu {} STATUS'".format(dev_num),
                     suggest_filename="sas3ircu_status_{}".format(dev_num),
                     timeout=5)
-
