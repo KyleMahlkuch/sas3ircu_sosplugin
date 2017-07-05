@@ -13,7 +13,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-#This sosreport plugin is meant for sas3ircu adapters.
+#This sosreport plugin is meant for sas adapters.
 #This plugin logs inforamtion on each adapter it finds. 
 
 from sos.plugins import Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin
