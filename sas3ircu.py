@@ -23,25 +23,26 @@ import os
 class SAS3ircu(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
 
     plugin_name = "sas3ircu"
+    commands = ("sas3ircu",)
 
     def setup(self):
 
         # get list of adapters
-        output = self.call_ext_prog("sh -c 'sas3ircu list'", timeout=5)
+        result = self.call_ext_prog("sas3ircu list", timeout=5)
 
-        if not (output["status"]):  # status = 0 means no timeout
-            self.add_cmd_output("sh -c 'sas3ircu list'",
+        if (result["status"] == 0):  # status == 0 means no timeout
+            self.add_cmd_output("sas3ircu list",
                                 suggest_filename="sas3ircu_list", timeout=5)
 
-            dev_lst = output["output"].splitlines()[10:-1]  # only want devices
+            sas_lst = result["output"].splitlines()[10:-1]  # only want devices
 
-            for dev_info in dev_lst:  # for each adapter get some basic info
-                dev_num = dev_info.split()[0]
+            for sas_info in sas_lst:  # for each adapter get some basic info
+                sas_num = sas_info.split()[0]
                 self.add_cmd_output(
-                    "sh -c 'sas3ircu {} DISPLAY'".format(dev_num),
-                    suggest_filename="sas3ircu_display_{}".format(dev_num),
+                    "sas3ircu {} display".format(sas_num),
+                    suggest_filename="sas3ircu_display_{}".format(sas_num),
                     timeout=5)
                 self.add_cmd_output(
-                    "sh -c 'sas3ircu {} STATUS'".format(dev_num),
-                    suggest_filename="sas3ircu_status_{}".format(dev_num),
+                    "sas3ircu {} status".format(sas_num),
+                    suggest_filename="sas3ircu_status_{}".format(sas_num),
                     timeout=5)
