@@ -46,3 +46,8 @@ class SAS3ircu(Plugin, RedHatPlugin, DebianPlugin, UbuntuPlugin):
                     "sas3ircu {} status".format(sas_num),
                     suggest_filename="sas3ircu_status_{}".format(sas_num),
                     timeout=5)
+                self.add_cmd_output(
+                    "sas3ircu {} logir UPLOAD LOGIR.LOG noprompt"
+                    .format(sas_num),
+                    suggest_filename="sas3ircu_status_{}".format(sas_num),
+                    timeout=5)
